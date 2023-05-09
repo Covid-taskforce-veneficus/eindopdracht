@@ -1,6 +1,7 @@
 import math
 import pickle
 from datetime import date
+import prophet
 
 import pandas as pd
 import streamlit as st
