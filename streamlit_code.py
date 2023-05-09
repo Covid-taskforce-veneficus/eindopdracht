@@ -1,3 +1,5 @@
+pip install fbprophet
+
 import math
 import pickle
 from datetime import date
