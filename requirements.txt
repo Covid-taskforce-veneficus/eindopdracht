@@ -1,4 +1,4 @@
-pandas==2.0.1
+pandas
 streamlit==0.85.0
 datetime==5.1
 altair==4.1.0
