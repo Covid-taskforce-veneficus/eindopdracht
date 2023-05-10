@@ -1,16 +1,16 @@
-
 import math
 import pickle
 from datetime import date
-
+from statistics import mean
 
 import pandas as pd
 import streamlit as st
+from my_functions import load_dataset
 
 st.title("Prediction orders Rotterdam")
 
 
-@st.cache
+@st.cache_data
 def forecast_api(df):
     #   """Will return a frecast based on new opp data and your saved model"""
     with open("VAR_Prophet_Model.pkl", "rb") as f:
@@ -29,11 +29,11 @@ def main():
     min_date = date(2023, 1, 1)
     max_date = date(2023, 12, 31)
 
-    future_date = st.sidebar.date_input(
+    future_date = st.date_input(
         "Select a date in 2023", min_value=min_date, max_value=max_date, value=min_date
     )
 
-    rainfall = st.sidebar.number_input("Expected rain in mm:", value=0)
+    rainfall = st.number_input("Expected rain in mm:", value=int(mean(load_dataset()["RH"])))
 
     if rainfall < -1:
         st.warning("Negative numbers are not allowed.")
