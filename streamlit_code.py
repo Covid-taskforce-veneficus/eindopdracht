@@ -1,22 +1,23 @@
+# %%
+
 import math
 import pickle
+import subprocess
 from datetime import date
-from statistics import mean
 
 import pandas as pd
 import streamlit as st
 from my_functions import load_dataset
 
-import subprocess
 subprocess.check_call(["python", "-m", "pip", "install", "click==7.1.2"])
 
-st.title("Prediction orders Rotterdam")
+st.title("Order Predictions Rotterdam")
 
 
-@st.cache
+@st.cache_data
 def forecast_api(df):
     #   """Will return a frecast based on new opp data and your saved model"""
-    with open("VAR_Prophet_Model.pkl", "rb") as f:
+    with open("rain_prophet_model.pkl", "rb") as f:
         loaded_model = pickle.load(f)
     predictions = loaded_model.predict(df)
     return predictions
@@ -27,29 +28,44 @@ def create_test(date, rainfall):
     return df
 
 
+def predict_rain(date_obj):
+    df = load_dataset()
+    month_number = date_obj.month
+    maand_gemiddelde = df[df["date"].dt.month == month_number]["RH"].mean()
+    return maand_gemiddelde
+
+
 # create a Streamlit app
 def main():
     min_date = date(2023, 1, 1)
     max_date = date(2023, 12, 31)
 
     future_date = st.date_input(
-        "Select a date in 2023", min_value=min_date, max_value=max_date, value=min_date
+        "**Select a date in 2023**", min_value=min_date, max_value=max_date, value=min_date
     )
 
-    rainfall = st.number_input("Expected rain in mm:", value=int(mean(load_dataset()["RH"])))
+    st.write(
+        "**If you do not enter any rainfall data, our model will make a rainfall prediction based on historic data*"
+    )
 
-    if rainfall < -1:
+    rainfall = st.number_input(
+        "**Expected rain in mm:**", value=int(predict_rain(future_date))
+    )  # int(mean(load_dataset()["RH"])))
+
+    if rainfall < 0:
         st.warning("Negative numbers are not allowed.")
     else:
-        output = create_test(future_date, rainfall)
+        input = create_test(future_date, rainfall)
 
-    prediction = forecast_api(output)
+    prediction = forecast_api(input)
 
     st.write(
-        "Prediction orders:", math.ceil(prediction.iloc[0, -1])
+        "**The predicted number of orders:**", math.ceil(prediction.iloc[0, -1]), "orders"
     )  # ik rond de orders naar boven af
 
 
-# run the app
+# run the app on streamlit
 if __name__ == "__main__":
     main()
+
+# %%
