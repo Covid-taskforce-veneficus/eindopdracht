@@ -5,5 +5,5 @@ datetime==5.1
 altair==4.1.0
 sqlalchemy==1.4.48
 python-dotenv==1.0.0
-psycopg2==2.9.6
+psycopg2-binary==2.9.6
 
