@@ -52,10 +52,14 @@ def main():
         "**Expected rain in mm:**", value=int(predict_rain(future_date))
     )  # int(mean(load_dataset()["RH"])))
 
-    if rainfall < 0:
-        st.warning("Negative numbers are not allowed.")
-    else:
-        input = create_test(future_date, rainfall)
+    try:
+        if rainfall < 0:
+            raise ValueError("Rainfall can not be a negative number.")
+        else:
+            input = create_test(future_date, rainfall)
+    except ValueError as e:
+        st.warning("Error: " + str(e) + ". Please enter a non-negative number.")
+        st.stop()
 
     prediction = forecast_api(input)
 
