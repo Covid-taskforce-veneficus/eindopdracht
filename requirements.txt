@@ -4,6 +4,6 @@ click==7.1.2
 datetime==5.1
 altair==4.1.0
 sqlalchemy==1.4.48
-dotenv==1.0.0
+python-dotenv==1.0.0
 
 
