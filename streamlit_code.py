@@ -13,7 +13,7 @@ subprocess.check_call(["python", "-m", "pip", "install", "click==7.1.2"])
 st.title("Prediction orders Rotterdam")
 
 
-@st.cache_data
+@st.cache
 def forecast_api(df):
     #   """Will return a frecast based on new opp data and your saved model"""
     with open("VAR_Prophet_Model.pkl", "rb") as f:
