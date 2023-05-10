@@ -1,6 +1,6 @@
 pandas==1.5.3
-click==7.1.2
 streamlit==0.85.0
+click==7.1.2
 datetime==5.1
 altair==4.1.0
 sqlalchemy==1.4.48
