@@ -7,6 +7,9 @@ import pandas as pd
 import streamlit as st
 from my_functions import load_dataset
 
+import subprocess
+subprocess.check_call(["python", "-m", "pip", "install", "click==7.1.2"])
+
 st.title("Prediction orders Rotterdam")
 
 
