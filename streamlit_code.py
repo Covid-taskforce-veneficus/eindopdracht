@@ -68,20 +68,6 @@ def main():
 
     st.write(
         "**The predicted number of orders:**", math.floor(prediction)
-        
-    st.markdown(
-        """
-    <style>
-    [data-testid="stMetricValue"] {
-        font-size: 100px;
-    }
-    </style>
-    """,
-        unsafe_allow_html=True,
-)
-
-    st.metric(label="Metric", value=1000, delta=100)
-        
     )  # ik rond de orders naar boven af
 
 
