@@ -77,7 +77,7 @@ def main():
         unsafe_allow_html=True,
     )
 
-    st.metric(label="**The predicted number of orders:**", value=math.floor(prediction.iloc[0,-1]))
+    st.metric(label="**The predicted number of orders:**", value=math.floor(prediction))
 
 
 # run the app on streamlit
