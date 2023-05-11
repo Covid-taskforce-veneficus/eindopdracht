@@ -1,11 +1,11 @@
 # %%
 
+import json
 import math
-import pickle
 import subprocess
-from datetime import date
+from datetime import date, datetime
 
-import pandas as pd
+import requests
 import streamlit as st
 from my_functions import load_dataset
 
@@ -14,18 +14,21 @@ subprocess.check_call(["python", "-m", "pip", "install", "click==7.1.2"])
 st.title("Order Predictions Rotterdam")
 
 
-@st.cache_data
-def forecast_api(df):
+def getpred(data):
     #   """Will return a frecast based on new opp data and your saved model"""
-    with open("rain_prophet_model.pkl", "rb") as f:
-        loaded_model = pickle.load(f)
-    predictions = loaded_model.predict(df)
-    return predictions
+    url = "http://a99039b5-4106-4fed-99b9-9f6523e66d05.westeurope.azurecontainer.io/score"
+    response = requests.post(url, json=data)
+    return response.json()["Prediction"]
 
 
-def create_test(date, rainfall):
-    df = pd.DataFrame({"ds": [date], "add1": [rainfall * 0.1]})
-    return df
+def date_converter(o):
+    if isinstance(o, datetime):
+        return o.__str__()
+
+
+def create_test(date_str, rainfall):
+    data = {"ds": [date_str], "add1": [rainfall * 0.1]}
+    return json.dumps(data, default=date_converter)
 
 
 def predict_rain(date_obj):
@@ -48,23 +51,23 @@ def main():
         "**If you do not enter any rainfall data, our model will make a rainfall prediction based on historic data*"
     )
 
-    rainfall = st.number_input(
-        "**Expected rain in mm:**", value=int(predict_rain(future_date))
-    )  # int(mean(load_dataset()["RH"])))
+    rainfall = st.number_input("**Expected rain in mm:**", value=int(predict_rain(future_date)))
 
     try:
         if rainfall < 0:
             raise ValueError("Rainfall can not be a negative number.")
         else:
-            input = create_test(future_date, rainfall)
+            input = create_test(str(future_date), rainfall)
     except ValueError as e:
         st.warning("Error: " + str(e) + ". Please enter a non-negative number.")
         st.stop()
 
-    prediction = forecast_api(input)
+    input_json = json.loads(input)
+
+    prediction = getpred(input_json)
 
     st.write(
-        "**The predicted number of orders:**", math.ceil(prediction.iloc[0, -1]), "orders"
+        "**The predicted number of orders:**", math.floor(prediction), "orders"
     )  # ik rond de orders naar boven af
 
 
