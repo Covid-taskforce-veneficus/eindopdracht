@@ -66,9 +66,18 @@ def main():
 
     prediction = getpred(input_json)
 
-    st.write(
-        "**The predicted number of orders:**", math.floor(prediction)
-    )  # ik rond de orders naar boven af
+    st.markdown(
+    """
+    <style>
+    [data-testid="stMetricValue"] {
+        font-size: 50;
+    }
+    </style>
+    """,
+        unsafe_allow_html=True,
+    )
+
+    st.metric(label="**The predicted number of orders:**", value=math.floor(prediction.iloc[0,-1]))
 
 
 # run the app on streamlit
