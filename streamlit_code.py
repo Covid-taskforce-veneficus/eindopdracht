@@ -67,7 +67,7 @@ def main():
     prediction = getpred(input_json)
 
     st.write(
-        "**The predicted number of orders:**", st.write(math.floor(prediction), style={'font-size': '50px'})
+        "**The predicted number of orders:**", st.write(math.floor(prediction), style={'font-size': '100px'})
     )  # ik rond de orders naar boven af
 
 
