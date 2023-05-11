@@ -44,7 +44,7 @@ def main():
     max_date = date(2023, 12, 31)
 
     future_date = st.date_input(
-        "**Select a date in 2023**", min_value=min_date, max_value=max_date, value=min_date
+        "**Select a date in 2023:**", min_value=min_date, max_value=max_date, value=min_date
     )
 
     st.write(
@@ -67,7 +67,7 @@ def main():
     prediction = getpred(input_json)
 
     st.write(
-        "**The predicted number of orders:**", math.floor(prediction), "orders"
+        "**The predicted number of orders:**", math.floor(prediction)
     )  # ik rond de orders naar boven af
 
 
