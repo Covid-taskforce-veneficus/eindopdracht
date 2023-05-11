@@ -71,6 +71,7 @@ def main():
     <style>
     [data-testid="stMetricValue"] {
         font-size: 50;
+        color: green;
     }
     </style>
     """,
