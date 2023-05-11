@@ -80,7 +80,7 @@ def main():
         unsafe_allow_html=True,
 )
 
-    st.metric(label="Metric", value=math.floor(prediction), delta=100)
+    st.metric(label="Metric", value=1000, delta=100)
         
     )  # ik rond de orders naar boven af
 
